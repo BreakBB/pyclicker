@@ -1,4 +1,3 @@
-import ctypes, sys
 from time import sleep
 from pynput.mouse import Controller, Button
 from pynput import keyboard
@@ -14,9 +13,6 @@ class Clicker:
     interval: float = 0.5
 
     def __init__(self, mouse_button: int, stop_key: str, interval: float):
-        if not self.is_admin():
-            self.restart_as_admin()
-            return
 
         self.mouse = Controller()
 
@@ -25,9 +21,11 @@ class Clicker:
 
         self.stop_key = stop_key
         self.mouse_button = self.get_button(mouse_button)
-        self.interval = interval
+        if interval:
+            self.interval = interval
 
     def run(self) -> None:
+        print("Running...")
         while self.should_run:
             self.mouse.press(self.mouse_button)
             sleep(0.5)
@@ -68,18 +66,6 @@ class Clicker:
             print("Unrecognized mouse button number: " + str(number))
             print("Using left mouse button (1) instead.")
             return Button.left
-
-    @staticmethod
-    def is_admin() -> bool:
-        try:
-            return ctypes.windll.shell32.IsUserAnAdmin()
-        except AttributeError:
-            return False
-
-    @staticmethod
-    def restart_as_admin() -> None:
-        print("Restarting as admin")
-        ctypes.windll.shell32.ShellExecuteW(None, "runas", sys.executable, __file__, None, 1)
 
 
 if __name__ == '__main__':
