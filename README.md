@@ -1,6 +1,6 @@
 # PyClicker
 
-PyClicker is a simple mouse simulating tool for Windows. It uses the Windows API to stay "below radar" and is therefore not detected my programs which recognizes similar tools.
+PyClicker is a simple mouse simulating tool for Windows. It uses the Windows API to stay "below radar" and is therefore not detected by programs which recognize similar tools.
 
 ## How to use it
 
