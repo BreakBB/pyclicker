@@ -19,16 +19,20 @@ class Clicker:
         listener = Listener(on_press=self.on_press)
         listener.start()
 
-        self.stop_key = KeyCode.from_char(stop_key)
+        if stop_key:
+            self.stop_key = KeyCode.from_char(stop_key)
         self.mouse_button = self.get_button(mouse_button)
         if interval:
             self.interval = interval
 
     def run(self) -> None:
-        print("Starting to click. Press '{}' to stop the clicker.".format(self.stop_key.char))
+        if self.stop_key:
+            key = "{}".format(self.stop_key)
+        else:
+            key = "any key"
+        print("Starting to click. Press {} to stop the clicker.".format(key))
         while self.should_run:
             self.mouse.press(self.mouse_button)
-            sleep(0.2)
             self.mouse.release(self.mouse_button)
             sleep(self.interval)
 
@@ -37,6 +41,9 @@ class Clicker:
             print("Any key pressed")
             self.should_run = False
             print("Exiting")
+            return
+        elif not self.should_run:
+            return
 
         if hasattr(key, "char"):
             print("Alphanumeric key '{}' pressed".format(
